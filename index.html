@@ -1,0 +1,19 @@
+<h1>My Portfolio</h1>
+
+<div id="projects"></div>
+<div id="skills"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="script.js"></script>
+
+<script>
+async function load() {
+  const { data: p } = await supabase.from('projects').select('*');
+  const { data: s } = await supabase.from('skills').select('*');
+
+  projects.innerHTML = p.map(x => `<p>${x.title}</p>`).join("");
+  skills.innerHTML = s.map(x => `<p>${x.skill_name}</p>`).join("");
+}
+
+load();
+</script>

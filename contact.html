@@ -1,0 +1,32 @@
+<h2>Contact</h2>
+
+<input id="email" placeholder="Email">
+<input id="phone" placeholder="Phone">
+<input id="address" placeholder="Address">
+
+<button onclick="save()">Save</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="script.js"></script>
+
+<script>
+async function save() {
+  const { data } = await supabase.from('contact_info').select('*');
+
+  if (data.length > 0) {
+    await supabase.from('contact_info')
+      .update({
+        email: email.value,
+        phone: phone.value,
+        address: address.value
+      })
+      .eq('id', data[0].id);
+  } else {
+    await supabase.from('contact_info').insert([{
+      email: email.value,
+      phone: phone.value,
+      address: address.value
+    }]);
+  }
+}
+</script>
