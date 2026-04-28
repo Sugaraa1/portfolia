@@ -3,17 +3,36 @@
 <div id="projects"></div>
 <div id="skills"></div>
 
+<!-- Supabase library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script src="script.js"></script>
 
 <script>
-async function load() {
-  const { data: p } = await supabase.from('projects').select('*');
-  const { data: s } = await supabase.from('skills').select('*');
+// 1. Supabase init (MUST BE FIRST)
+const supabase = window.supabase.createClient(
+  "https://vubbkhcrvrihmztjmifl.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1YmJraGNydnJpaG16dGptaWZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMDEzNjAsImV4cCI6MjA5Mjg3NzM2MH0.d7CgYNAToZwMxK9EiHkFbp76d1mlgK2i7PFYtIGqMEY"
+);
 
-  projects.innerHTML = p.map(x => `<p>${x.title}</p>`).join("");
-  skills.innerHTML = s.map(x => `<p>${x.skill_name}</p>`).join("");
+// 2. Load function
+async function load() {
+
+  const { data: p, error: pe } = await supabase
+    .from('projects')
+    .select('*');
+
+  const { data: s, error: se } = await supabase
+    .from('skills')
+    .select('*');
+
+  console.log(p, s);
+
+  document.getElementById("projects").innerHTML =
+    (p || []).map(x => `<p>${x.title}</p>`).join("");
+
+  document.getElementById("skills").innerHTML =
+    (s || []).map(x => `<p>${x.skill_name}</p>`).join("");
 }
 
+// 3. Run
 load();
 </script>
