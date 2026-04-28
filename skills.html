@@ -1,37 +1,15 @@
 <h2>Skills</h2>
 
-<input id="skill" placeholder="Skill">
-<input id="order" type="number" value="1">
-<button onclick="add()">Add</button>
+<input id="skillName" placeholder="Skill">
+<input id="skillOrder" type="number" value="1">
 
-<div id="list"></div>
+<button onclick="addSkill()">Add</button>
+
+<div id="skillsList"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="script.js"></script>
 
 <script>
-async function load() {
-  const { data } = await supabase.from('skills').select('*');
-
-  list.innerHTML = data.map(s => `
-    <div>
-      ${s.skill_name}
-      <button onclick="del(${s.id})">X</button>
-    </div>
-  `).join("");
-}
-
-async function add() {
-  await supabase.from('skills').insert([
-    { skill_name: skill.value, sort_order: order.value }
-  ]);
-  load();
-}
-
-async function del(id) {
-  await supabase.from('skills').delete().eq('id', id);
-  load();
-}
-
-load();
+loadSkills();
 </script>
