@@ -12,11 +12,11 @@
 // 2. Load function
 async function load() {
 
-  const { data: p, error: pe } = await supabase
+  const { data: p, error: pe } = await supabaseClient
     .from('projects')
     .select('*');
 
-  const { data: s, error: se } = await supabase
+  const { data: s, error: se } = await supabaseClient
     .from('skills')
     .select('*');
 
