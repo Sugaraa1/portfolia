@@ -119,7 +119,7 @@ async function load() {
         <div class="project-num">0${projects.indexOf(p)+1}</div>
         <h3>${p.title}</h3>
         <p>${p.description || ''}</p>
-        ${p.url ? `<a href="${p.url}" target="_blank" class="project-link">→ View</a>` : ''}
+        ${p.url ? `<a href="${p.url}" target="_blank" class="project-link">View</a>` : ''}
       </div>
     `).join('');
   } else {
