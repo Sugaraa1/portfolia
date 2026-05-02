@@ -1,23 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="mn">
 <head>
-  <title>Admin</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .dash-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      text-decoration: none;
+      transition: all 0.25s;
+      display: block;
+    }
+    .dash-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    }
+    .dash-icon {
+      font-size: 1.8rem;
+      margin-bottom: 14px;
+    }
+    .dash-card h3 {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+    .dash-card p {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+    .admin-header h1 {
+      font-family: var(--font-head);
+      font-size: 2rem;
+    }
+    .admin-header h1 span {
+      background: linear-gradient(135deg, var(--purple-light), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
 </head>
 <body onload="checkAuth()">
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+</div>
 
-<h1>Admin Dashboard</h1>
+<nav class="nav">
+  <div class="nav-logo">PORT<span>FOLIO</span></div>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="index.html" style="color:var(--text-muted);font-size:.85rem">← Нүүр</a>
+    <button class="admin-logout" onclick="logout()">Гарах</button>
+  </div>
+</nav>
 
-<button onclick="logout()">Logout</button>
-
-<ul>
-  <li><a href="projects.html">Projects</a></li>
-  <li><a href="skills.html">Skills</a></li>
-  <li><a href="contact.html">Contact</a></li>
-</ul>
+<div class="admin-wrap" style="margin-top:120px">
+  <div class="admin-header">
+    <h1>Admin <span>Dashboard</span></h1>
+  </div>
+  <div class="dashboard-grid">
+    <a href="projects.html" class="dash-card">
+      <div class="dash-icon">🚀</div>
+      <h3>Төслүүд</h3>
+      <p>Нэмэх, устгах</p>
+    </a>
+    <a href="skills.html" class="dash-card">
+      <div class="dash-icon">⚡</div>
+      <h3>Чадварууд</h3>
+      <p>Нэмэх, устгах</p>
+    </a>
+    <a href="contact.html" class="dash-card">
+      <div class="dash-icon">📬</div>
+      <h3>Холбоо барих</h3>
+      <p>Мэдээлэл засах</p>
+    </a>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="script.js"></script>
-
 </body>
 </html>

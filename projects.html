@@ -1,15 +1,42 @@
-<h2>Projects</h2>
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Төслүүд</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body onload="checkAuth()">
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+</div>
 
-<input id="projectTitle" placeholder="Title">
-<input id="projectDesc" placeholder="Description">
+<nav class="nav">
+  <div class="nav-logo">PORT<span>FOLIO</span></div>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="admin.html" style="color:var(--text-muted);font-size:.85rem">← Dashboard</a>
+    <button class="admin-logout" onclick="logout()">Гарах</button>
+  </div>
+</nav>
 
-<button onclick="addProject()">Add</button>
+<div class="admin-wrap" style="margin-top:120px">
+  <h2>🚀 Төслүүд</h2>
 
-<div id="projectList"></div>
+  <div class="admin-form">
+    <input id="projectTitle" placeholder="Төслийн нэр *">
+    <input id="projectDesc" placeholder="Тайлбар">
+    <input id="projectUrl" placeholder="Холбоос (https://...)">
+    <button class="admin-btn" onclick="addProject()">+ Нэмэх</button>
+  </div>
+
+  <div id="projectList"></div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="script.js"></script>
-
-<script>
-loadProjects();
-</script>
+<script>loadProjects();</script>
+</body>
+</html>

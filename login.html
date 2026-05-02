@@ -1,34 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="mn">
 <head>
-  <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Нэвтрэх</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .login-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative; z-index: 1;
+    }
+    .login-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 400px;
+      animation: fadeUp 0.6s ease forwards;
+    }
+    .login-logo {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--purple-light);
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .login-box h2 {
+      font-family: var(--font-head);
+      font-size: 1.6rem;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    .login-box input {
+      display: block;
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 16px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .login-box input:focus { border-color: var(--purple); }
+    .login-box input::placeholder { color: var(--text-dim); }
+    .login-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 0 30px rgba(138,92,246,0.3);
+    }
+    .login-btn:hover {
+      background: var(--purple-light);
+      transform: translateY(-1px);
+    }
+    .login-back {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+    .login-back a { color: var(--purple); }
+    .login-back a:hover { color: var(--purple-light); }
+    #loginError {
+      color: #f87171;
+      font-size: 0.85rem;
+      margin-top: 8px;
+      text-align: center;
+      min-height: 20px;
+    }
+  </style>
 </head>
 <body>
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+</div>
 
-<h2>Login</h2>
-
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
+<div class="login-wrap">
+  <div class="login-box">
+    <div class="login-logo">PORT<span style="color:var(--text-muted)">FOLIO</span></div>
+    <h2>Нэвтрэх</h2>
+    <input id="email" type="email" placeholder="Имэйл хаяг">
+    <input id="password" type="password" placeholder="Нууц үг" onkeydown="if(event.key==='Enter') login()">
+    <div id="loginError"></div>
+    <button class="login-btn" onclick="login()">Нэвтрэх →</button>
+    <div class="login-back"><a href="index.html">← Буцах</a></div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="script.js"></script>
-
 <script>
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
+  const errEl = document.getElementById("loginError");
+  errEl.textContent = '';
 
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email, password
-  });
+  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
-  if (error) alert(error.message);
-  else window.location.href = "admin.html";
+  if (error) {
+    errEl.textContent = 'Нэвтрэх мэдээлэл буруу байна.';
+  } else {
+    window.location.href = "admin.html";
+  }
 }
 </script>
-
 </body>
 </html>

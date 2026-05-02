@@ -1,10 +1,45 @@
-<h2>Contact</h2>
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Холбоо барих</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body onload="init()">
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+</div>
 
-<input id="email" placeholder="Email">
-<input id="phone" placeholder="Phone">
-<input id="address" placeholder="Address">
+<nav class="nav">
+  <div class="nav-logo">PORT<span>FOLIO</span></div>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="admin.html" style="color:var(--text-muted);font-size:.85rem">← Dashboard</a>
+    <button class="admin-logout" onclick="logout()">Гарах</button>
+  </div>
+</nav>
 
-<button onclick="saveContact()">Save</button>
+<div class="admin-wrap" style="margin-top:120px">
+  <h2>📬 Холбоо барих мэдээлэл</h2>
+
+  <div class="admin-form">
+    <input id="email" placeholder="Имэйл хаяг">
+    <input id="phone" placeholder="Утасны дугаар">
+    <input id="address" placeholder="Хаяг / байршил">
+    <button class="admin-btn" id="saveBtn" onclick="saveContact()">Хадгалах</button>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="script.js"></script>
+<script>
+async function init() {
+  await checkAuth();
+  await loadContact();
+}
+</script>
+</body>
+</html>
