@@ -328,6 +328,10 @@ a { color: inherit; text-decoration: none; }
 .project-card p {
   color: var(--text-muted);
   font-size: 0.92rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .project-link {
   display: inline-block;
