@@ -8,6 +8,79 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a1a2e'/><text y='72' x='50' text-anchor='middle' font-family='monospace' font-weight='700' font-size='42' fill='%23a78bfa'>&lt;/&gt;</text></svg>?v=2">
+  <style>
+    .edit-form {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .edit-form.open { display: flex; }
+    .edit-form input {
+      display: block;
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 9px 13px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .edit-form input:focus { border-color: var(--purple); }
+    .edit-form input::placeholder { color: var(--text-dim); }
+    .edit-actions { display: flex; gap: 8px; margin-top: 4px; }
+    .btn-save {
+      padding: 7px 18px;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font-head);
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-save:hover { background: var(--purple-light); }
+    .btn-cancel {
+      padding: 7px 18px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-cancel:hover { border-color: var(--purple); color: var(--purple-light); }
+    .btn-edit {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-edit:hover { border-color: var(--purple); color: var(--purple-light); }
+    .admin-card { flex-direction: column; align-items: stretch; }
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .card-controls { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+    .save-indicator { font-size: 0.8rem; color: #34d399; display: none; }
+  </style>
 </head>
 <body onload="checkAuth()">
 <div class="bg-orbs">
@@ -38,6 +111,91 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="script.js"></script>
-<script>loadProjects();</script>
+<script>
+function esc(str) {
+  return (str || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+async function loadProjects() {
+  const { data } = await supabaseClient.from("projects").select("*");
+  const list = document.getElementById("projectList");
+  if (!list) return;
+
+  if (!data || data.length === 0) {
+    list.innerHTML = '<p style="color:var(--text-dim);font-size:.9rem">Төсөл байхгүй байна</p>';
+    return;
+  }
+
+  list.innerHTML = data.map(p => `
+    <div class="admin-card" id="card-${p.id}">
+      <div class="card-top">
+        <div class="admin-card-text" style="flex:1;min-width:0">
+          <b id="ptitle-${p.id}">${p.title}</b>
+          <p id="pdesc-${p.id}" style="word-break:break-word;margin-top:4px">${p.description || ''}</p>
+          ${p.url ? `<a href="${p.url}" target="_blank" style="color:var(--purple);font-size:.78rem;display:inline-block;margin-top:4px;word-break:break-all">${p.url}</a>` : ''}
+        </div>
+        <div class="card-controls">
+          <span class="save-indicator" id="saved-${p.id}">Хадгалагдлаа</span>
+          <button class="btn-edit" onclick="toggleEdit(${p.id})">Засах</button>
+          <button class="admin-btn danger" onclick="deleteProject(${p.id})">Устгах</button>
+        </div>
+      </div>
+
+      <div class="edit-form" id="editForm-${p.id}">
+        <input id="etitle-${p.id}" placeholder="Төслийн нэр *" value="${esc(p.title)}">
+        <input id="edesc-${p.id}" placeholder="Тайлбар" value="${esc(p.description || '')}">
+        <input id="eurl-${p.id}" placeholder="Холбоос (https://...)" value="${esc(p.url || '')}">
+        <div class="edit-actions">
+          <button class="btn-save" onclick="saveProject(${p.id})">Хадгалах</button>
+          <button class="btn-cancel" onclick="toggleEdit(${p.id})">Болих</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleEdit(id) {
+  document.getElementById(`editForm-${id}`).classList.toggle('open');
+}
+
+async function saveProject(id) {
+  const title = document.getElementById(`etitle-${id}`).value.trim();
+  const description = document.getElementById(`edesc-${id}`).value.trim();
+  const url = document.getElementById(`eurl-${id}`).value.trim();
+  if (!title) return;
+
+  const { error } = await supabaseClient.from('projects').update({ title, description, url }).eq('id', id);
+  if (error) { alert('Алдаа: ' + error.message); return; }
+
+  document.getElementById(`ptitle-${id}`).textContent = title;
+  document.getElementById(`pdesc-${id}`).textContent = description;
+
+  const saved = document.getElementById(`saved-${id}`);
+  saved.style.display = 'inline';
+  setTimeout(() => { saved.style.display = 'none'; }, 2500);
+
+  toggleEdit(id);
+}
+
+async function addProject() {
+  const title = document.getElementById("projectTitle").value.trim();
+  const description = document.getElementById("projectDesc").value.trim();
+  const url = document.getElementById("projectUrl").value.trim();
+  if (!title) return;
+  await supabaseClient.from("projects").insert([{ title, description, url }]);
+  document.getElementById("projectTitle").value = '';
+  document.getElementById("projectDesc").value = '';
+  document.getElementById("projectUrl").value = '';
+  loadProjects();
+}
+
+async function deleteProject(id) {
+  if (!confirm('Устгах уу?')) return;
+  await supabaseClient.from("projects").delete().eq("id", id);
+  loadProjects();
+}
+
+loadProjects();
+</script>
 </body>
 </html>
