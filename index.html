@@ -37,14 +37,12 @@
     <span class="line2" data-mn="Би бол" data-en="I'm a">Би бол</span>
     <span class="highlight" id="heroRole" data-mn="программ хангаммжийн оюутан" data-en="software engineering student">программ хангаммжийн оюутан</span>
   </h1>
- 
+
   <div class="hero-cta">
     <a href="#projects" class="btn-primary" data-mn="Төслүүд харах" data-en="View Projects">Төслүүд харах</a>
     <a href="#contact" class="btn-ghost" data-mn="Холбоо барих" data-en="Contact Me">Холбоо барих</a>
   </div>
-  <div class="social-row" id="socialLinks">
-    <!-- loaded from supabase -->
-  </div>
+  <div class="social-row" id="socialLinks"></div>
 </section>
 
 <!-- Skills -->
@@ -96,6 +94,19 @@
   <a href="admin.html" data-mn="Админ" data-en="Admin">Админ</a>
 </footer>
 
+<!-- Project Modal -->
+<div id="projectModal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()" aria-label="Хаах">✕</button>
+    <div class="modal-num" id="modalNum"></div>
+    <h2 class="modal-title" id="modalTitle"></h2>
+    <p class="modal-desc" id="modalDesc"></p>
+    <a id="modalLink" class="modal-link" target="_blank" rel="noopener">
+      <span data-mn="Харах" data-en="View">Харах</span> ↗
+    </a>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="script.js"></script>
 <script>
@@ -109,18 +120,52 @@ function toggleLang() {
   });
 }
 
+// ---- PROJECTS DATA ----
+let allProjects = [];
+
+// ---- MODAL ----
+function openModal(index) {
+  const p = allProjects[index];
+  if (!p) return;
+  document.getElementById('modalNum').textContent = `0${index + 1} · Төсөл`;
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalDesc').textContent = p.description || 'Тайлбар байхгүй байна.';
+  const linkEl = document.getElementById('modalLink');
+  if (p.url) {
+    linkEl.href = p.url;
+    linkEl.style.display = 'inline-flex';
+  } else {
+    linkEl.style.display = 'none';
+  }
+  const modal = document.getElementById('projectModal');
+  modal.classList.add('modal-active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  const modal = document.getElementById('projectModal');
+  modal.classList.remove('modal-active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
 // ---- LOAD DATA ----
 async function load() {
   // Projects
   const { data: projects } = await supabaseClient.from('projects').select('*');
+  allProjects = projects || [];
   const pg = document.getElementById('projectsGrid');
-  if (projects && projects.length > 0) {
-    pg.innerHTML = projects.map(p => `
-      <div class="project-card">
-        <div class="project-num">0${projects.indexOf(p)+1}</div>
+  if (allProjects.length > 0) {
+    pg.innerHTML = allProjects.map((p, i) => `
+      <div class="project-card" onclick="openModal(${i})" role="button" tabindex="0"
+           onkeydown="if(event.key==='Enter')openModal(${i})">
+        <div class="project-num">0${i + 1}</div>
         <h3>${p.title}</h3>
         <p>${p.description || ''}</p>
-        ${p.url ? `<a href="${p.url}" target="_blank" class="project-link" data-mn="Харах" data-en="View">Харах</a>` : ''}
+        <span class="project-link" data-mn="Дэлгэрэнгүй харах" data-en="View Details">Дэлгэрэнгүй харах →</span>
       </div>
     `).join('');
   } else {
