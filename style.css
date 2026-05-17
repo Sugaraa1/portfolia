@@ -80,9 +80,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--text-muted);
 }
 .nav-logo span { color: var(--purple-light); }
-.nav-links {
-  display: flex; gap: 36px;
-}
+.nav-links { display: flex; gap: 36px; }
 .nav-links a {
   font-size: 0.85rem;
   letter-spacing: 0.08em;
@@ -103,10 +101,7 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer;
   transition: all 0.2s;
 }
-.lang-toggle:hover {
-  background: var(--purple);
-  color: #fff;
-}
+.lang-toggle:hover { background: var(--purple); color: #fff; }
 
 /* ===== HERO ===== */
 .hero {
@@ -115,23 +110,6 @@ a { color: inherit; text-decoration: none; }
   display: flex; flex-direction: column; justify-content: center;
   padding: 120px 48px 80px;
   max-width: 1100px;
-}
-.hero-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.78rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--purple-light);
-  margin-bottom: 28px;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.2s forwards;
-}
-.hero-tag::before {
-  content: '';
-  width: 32px; height: 1px;
-  background: var(--purple);
 }
 .hero-name {
   font-family: var(--font-head);
@@ -159,14 +137,6 @@ a { color: inherit; text-decoration: none; }
   opacity: 0;
   animation: fadeUp 0.8s 0.8s forwards;
   display: inline-block;
-}
-.hero-bio {
-  max-width: 520px;
-  color: var(--text-muted);
-  font-size: 1.05rem;
-  margin-bottom: 40px;
-  opacity: 0;
-  animation: fadeUp 0.8s 1s forwards;
 }
 .hero-cta {
   display: flex; gap: 16px; flex-wrap: wrap;
@@ -202,10 +172,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.05em;
   transition: all 0.25s;
 }
-.btn-ghost:hover {
-  border-color: var(--purple);
-  color: var(--purple-light);
-}
+.btn-ghost:hover { border-color: var(--purple); color: var(--purple-light); }
 .social-row {
   display: flex; gap: 14px; flex-wrap: wrap;
   opacity: 0;
@@ -255,9 +222,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ===== SKILLS ===== */
-.skills-grid {
-  display: flex; flex-wrap: wrap; gap: 12px;
-}
+.skills-grid { display: flex; flex-wrap: wrap; gap: 12px; }
 .skill-chip {
   padding: 12px 24px;
   background: var(--surface);
@@ -325,14 +290,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 700;
   margin-bottom: 10px;
 }
-.project-card p {
-  color: var(--text-muted);
-  font-size: 0.92rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+.project-card p { color: var(--text-muted); font-size: 0.92rem; }
 .project-link {
   display: inline-block;
   margin-top: 20px;
@@ -364,8 +322,7 @@ a { color: inherit; text-decoration: none; }
 }
 .contact-box::before {
   content: '';
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: linear-gradient(135deg, var(--purple-dim), transparent);
   pointer-events: none;
 }
@@ -378,10 +335,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 1rem;
 }
 .contact-item:last-child { border-bottom: none; }
-.contact-icon {
-  color: var(--purple);
-  font-size: 0.8rem;
-}
+.contact-icon { color: var(--purple); font-size: 0.8rem; }
 .deco-circle {
   width: 180px; height: 180px;
   border-radius: 50%;
@@ -390,15 +344,13 @@ a { color: inherit; text-decoration: none; }
 }
 .deco-circle::before {
   content: '';
-  position: absolute;
-  inset: 20px;
+  position: absolute; inset: 20px;
   border-radius: 50%;
   border: 1px solid var(--border);
 }
 .deco-circle::after {
   content: '';
-  position: absolute;
-  inset: 40px;
+  position: absolute; inset: 40px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--purple-dim), rgba(232,121,249,0.1));
 }
@@ -416,11 +368,7 @@ a { color: inherit; text-decoration: none; }
 .footer a:hover { color: var(--purple-light); }
 
 /* ===== EMPTY ===== */
-.empty-msg {
-  color: var(--text-dim);
-  font-style: italic;
-  font-size: 0.9rem;
-}
+.empty-msg { color: var(--text-dim); font-style: italic; font-size: 0.9rem; }
 
 /* ===== ANIMATIONS ===== */
 @keyframes fadeUp {
@@ -434,10 +382,7 @@ a { color: inherit; text-decoration: none; }
   .nav-links { display: none; }
   .hero { padding: 100px 20px 60px; }
   .section { padding: 70px 20px; }
-  .contact-box {
-    grid-template-columns: 1fr;
-    padding: 32px 24px;
-  }
+  .contact-box { grid-template-columns: 1fr; padding: 32px 24px; }
   .deco-circle { display: none; }
 }
 
@@ -548,6 +493,7 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
   padding: 24px;
   backdrop-filter: blur(8px);
+  /* hidden by default */
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -560,18 +506,23 @@ a { color: inherit; text-decoration: none; }
   transform: translateY(0);
   opacity: 1;
 }
+
 .modal-box {
   background: var(--surface);
   border: 1px solid rgba(138, 92, 246, 0.3);
   border-radius: 16px;
-  max-width: 540px;
   width: 100%;
-  padding: 48px 40px;
+  max-width: 540px;
+  /* ← FIXED HEIGHT + FLEX = scroll дотор ажиллана */
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
   position: relative;
   transform: translateY(24px);
   opacity: 0;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+  overflow: hidden; /* box-ийн radius хадгалах */
 }
 .modal-box::before {
   content: '';
@@ -580,11 +531,16 @@ a { color: inherit; text-decoration: none; }
   height: 2px;
   background: linear-gradient(90deg, var(--purple), var(--pink));
   border-radius: 16px 16px 0 0;
+  flex-shrink: 0;
+  z-index: 1;
 }
+
+/* Хаах товч — sticky дээр байна, scroll хийхэд дагаж явдаггүй */
 .modal-close {
   position: absolute;
-  top: 18px; right: 18px;
-  background: transparent;
+  top: 16px; right: 16px;
+  z-index: 10;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text-muted);
@@ -599,6 +555,23 @@ a { color: inherit; text-decoration: none; }
   border-color: var(--purple);
   background: var(--purple-dim);
 }
+
+/* Scroll хийдэг хэсэг */
+.modal-scroll-area {
+  overflow-y: auto;
+  padding: 40px;
+  flex: 1;
+  /* Scrollbar загвар */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.modal-scroll-area::-webkit-scrollbar { width: 4px; }
+.modal-scroll-area::-webkit-scrollbar-track { background: transparent; }
+.modal-scroll-area::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
 .modal-num {
   font-size: 0.72rem;
   letter-spacing: 0.22em;
@@ -606,6 +579,8 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 14px;
   text-transform: uppercase;
   font-family: var(--font-head);
+  /* хаах товчтой давхцахгүйн тулд */
+  padding-right: 48px;
 }
 .modal-title {
   font-family: var(--font-head);
@@ -613,6 +588,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 800;
   margin-bottom: 18px;
   line-height: 1.15;
+  padding-right: 48px;
   background: linear-gradient(135deg, var(--text), var(--purple-light));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -623,6 +599,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.97rem;
   line-height: 1.75;
   margin-bottom: 32px;
+  white-space: pre-wrap; /* урт тайлбар мөр таслана */
 }
 .modal-link {
   display: inline-flex;
@@ -647,10 +624,11 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 768px) {
+  .modal-overlay { padding: 16px; align-items: flex-end; }
   .modal-box {
-    padding: 32px 24px;
+    max-height: 85vh;
+    border-radius: 16px 16px 10px 10px;
   }
-  .modal-title {
-    font-size: 1.4rem;
-  }
+  .modal-scroll-area { padding: 28px 20px; }
+  .modal-title { font-size: 1.4rem; }
 }
