@@ -11,14 +11,12 @@
 </head>
 <body>
 
-<!-- Background -->
 <div class="bg-orbs">
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
   <div class="orb orb3"></div>
 </div>
 
-<!-- Nav -->
 <nav class="nav">
   <div class="nav-logo"><span>Megi</span></div>
   <div class="nav-links">
@@ -30,14 +28,12 @@
   <button class="lang-toggle" onclick="toggleLang()" id="langBtn">EN</button>
 </nav>
 
-<!-- Hero -->
 <section class="hero" id="about">
   <h1 class="hero-name">
     <span class="line1" data-mn="Сайн уу," data-en="Hello,">Сайн уу,</span><br>
     <span class="line2" data-mn="Би бол" data-en="I'm a">Би бол</span>
-    <span class="highlight" id="heroRole" data-mn="программ хангаммжийн оюутан" data-en="software engineering student">программ хангаммжийн оюутан</span>
+    <span class="highlight" data-mn="программ хангаммжийн оюутан" data-en="software engineering student">программ хангаммжийн оюутан</span>
   </h1>
-
   <div class="hero-cta">
     <a href="#projects" class="btn-primary" data-mn="Төслүүд харах" data-en="View Projects">Төслүүд харах</a>
     <a href="#contact" class="btn-ghost" data-mn="Холбоо барих" data-en="Contact Me">Холбоо барих</a>
@@ -45,7 +41,6 @@
   <div class="social-row" id="socialLinks"></div>
 </section>
 
-<!-- Skills -->
 <section class="section" id="skills">
   <div class="section-label" data-mn="Чадварууд" data-en="Skills">Чадварууд</div>
   <h2 class="section-title" data-mn="Би юу хийж чаддаг вэ?" data-en="What can I do?">Би юу хийж чаддаг вэ?</h2>
@@ -54,7 +49,6 @@
   </div>
 </section>
 
-<!-- Projects -->
 <section class="section" id="projects">
   <div class="section-label" data-mn="Төслүүд" data-en="Projects">Төслүүд</div>
   <h2 class="section-title" data-mn="Миний бүтээлүүд" data-en="My Work">Миний бүтээлүүд</h2>
@@ -63,7 +57,6 @@
   </div>
 </section>
 
-<!-- Contact -->
 <section class="section" id="contact">
   <div class="section-label" data-mn="Холбоо барих" data-en="Contact">Холбоо барих</div>
   <h2 class="section-title" data-mn="Надтай холбогдоорой" data-en="Get in touch">Надтай холбогдоорой</h2>
@@ -88,7 +81,6 @@
   </div>
 </section>
 
-<!-- Footer -->
 <footer class="footer">
   &nbsp;·&nbsp;
   <a href="admin.html" data-mn="Админ" data-en="Admin">Админ</a>
@@ -97,7 +89,7 @@
 <!-- Project Modal -->
 <div id="projectModal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()" aria-label="Хаах">✕</button>
+    <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-scroll-area">
       <div class="modal-num" id="modalNum"></div>
       <h2 class="modal-title" id="modalTitle"></h2>
@@ -122,8 +114,14 @@ function toggleLang() {
   });
 }
 
-// ---- PROJECTS DATA ----
+// ---- PROJECTS ----
 let allProjects = [];
+
+// Тайлбарыг хураангуйлах — 100 тэмдэгтээс хэтэрвэл ... нэмнэ
+function truncate(str, len = 100) {
+  if (!str) return '';
+  return str.length > len ? str.slice(0, len).trimEnd() + '…' : str;
+}
 
 // ---- MODAL ----
 function openModal(index) {
@@ -139,12 +137,11 @@ function openModal(index) {
   } else {
     linkEl.style.display = 'none';
   }
-  // scroll-г дээш буцаах
-  const scrollArea = document.querySelector('.modal-scroll-area');
-  if (scrollArea) scrollArea.scrollTop = 0;
+  // scroll дээшлүүлэх
+  const sa = document.querySelector('.modal-scroll-area');
+  if (sa) sa.scrollTop = 0;
 
-  const modal = document.getElementById('projectModal');
-  modal.classList.add('modal-active');
+  document.getElementById('projectModal').classList.add('modal-active');
   document.body.style.overflow = 'hidden';
 }
 
@@ -153,9 +150,7 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeModal();
-});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 // ---- LOAD DATA ----
 async function load() {
@@ -169,8 +164,8 @@ async function load() {
            onkeydown="if(event.key==='Enter')openModal(${i})">
         <div class="project-num">0${i + 1}</div>
         <h3>${p.title}</h3>
-        <p>${p.description || ''}</p>
-        <span class="project-link" data-mn="Дэлгэрэнгүй харах" data-en="View Details">Дэлгэрэнгүй харах</span>
+        <p class="project-desc">${truncate(p.description)}</p>
+        <span class="project-link" data-mn="Дэлгэрэнгүй харах" data-en="View Details">Дэлгэрэнгүй харах →</span>
       </div>
     `).join('');
   } else {
