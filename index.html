@@ -86,24 +86,33 @@
   <a href="admin.html" data-mn="Админ" data-en="Admin">Админ</a>
 </footer>
 
+<!-- Project Modal -->
 <div id="projectModal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
+
+    <!-- Хаах товч — үргэлж дээр -->
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-scroll-area">
+
+    <!-- Scroll хийдэг: зөвхөн гарчиг + тайлбар -->
+    <div class="modal-body">
       <div class="modal-num" id="modalNum"></div>
       <h2 class="modal-title" id="modalTitle"></h2>
       <p class="modal-desc" id="modalDesc"></p>
+    </div>
+
+    <!-- Sticky footer: үргэлж доор харагдана -->
+    <div class="modal-footer" id="modalFooter">
       <a id="modalLink" class="modal-link" target="_blank" rel="noopener">
-        <span data-mn="Харах" data-en="View">Харах</span>
+        Харах ↗
       </a>
     </div>
+
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="script.js"></script>
 <script>
-
 let currentLang = 'mn';
 function toggleLang() {
   currentLang = currentLang === 'mn' ? 'en' : 'mn';
@@ -112,7 +121,6 @@ function toggleLang() {
     el.textContent = el.dataset[currentLang];
   });
 }
-
 
 let allProjects = [];
 
@@ -127,16 +135,19 @@ function openModal(index) {
   document.getElementById('modalNum').textContent = `0${index + 1} · Төсөл`;
   document.getElementById('modalTitle').textContent = p.title;
   document.getElementById('modalDesc').textContent = p.description || 'Тайлбар байхгүй байна.';
+
   const linkEl = document.getElementById('modalLink');
+  const footer = document.getElementById('modalFooter');
   if (p.url) {
     linkEl.href = p.url;
-    linkEl.style.display = 'inline-flex';
+    footer.style.display = 'flex';
   } else {
-    linkEl.style.display = 'none';
+    footer.style.display = 'none';
   }
 
-  const sa = document.querySelector('.modal-scroll-area');
-  if (sa) sa.scrollTop = 0;
+  // scroll дээшлүүлэх
+  const body = document.querySelector('.modal-body');
+  if (body) body.scrollTop = 0;
 
   document.getElementById('projectModal').classList.add('modal-active');
   document.body.style.overflow = 'hidden';
@@ -149,7 +160,6 @@ function closeModal() {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-
 async function load() {
   const { data: projects } = await supabaseClient.from('projects').select('*');
   allProjects = projects || [];
@@ -161,7 +171,7 @@ async function load() {
         <div class="project-num">0${i + 1}</div>
         <h3>${p.title}</h3>
         <p class="project-desc">${truncate(p.description)}</p>
-        <span class="project-link" data-mn="Дэлгэрэнгүй харах" data-en="View Details">Дэлгэрэнгүй харах</span>
+        <span class="project-link" data-mn="Дэлгэрэнгүй харах" data-en="View Details">Дэлгэрэнгүй харах →</span>
       </div>
     `).join('');
   } else {
