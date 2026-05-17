@@ -98,12 +98,14 @@
 <div id="projectModal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()" aria-label="Хаах">✕</button>
-    <div class="modal-num" id="modalNum"></div>
-    <h2 class="modal-title" id="modalTitle"></h2>
-    <p class="modal-desc" id="modalDesc"></p>
-    <a id="modalLink" class="modal-link" target="_blank" rel="noopener">
-      <span data-mn="Харах" data-en="View">Харах</span>
-    </a>
+    <div class="modal-scroll-area">
+      <div class="modal-num" id="modalNum"></div>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <p class="modal-desc" id="modalDesc"></p>
+      <a id="modalLink" class="modal-link" target="_blank" rel="noopener">
+        <span data-mn="Харах" data-en="View">Харах</span> ↗
+      </a>
+    </div>
   </div>
 </div>
 
@@ -137,14 +139,17 @@ function openModal(index) {
   } else {
     linkEl.style.display = 'none';
   }
+  // scroll-г дээш буцаах
+  const scrollArea = document.querySelector('.modal-scroll-area');
+  if (scrollArea) scrollArea.scrollTop = 0;
+
   const modal = document.getElementById('projectModal');
   modal.classList.add('modal-active');
   document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {
-  const modal = document.getElementById('projectModal');
-  modal.classList.remove('modal-active');
+  document.getElementById('projectModal').classList.remove('modal-active');
   document.body.style.overflow = '';
 }
 
@@ -164,8 +169,8 @@ async function load() {
            onkeydown="if(event.key==='Enter')openModal(${i})">
         <div class="project-num">0${i + 1}</div>
         <h3>${p.title}</h3>
-        <p>${(p.description || '').slice(0, 120)}${(p.description || '').length > 120 ? '…' : ''}</p>
-        <span class="project-link" ...>Дэлгэрэнгүй харах</span>
+        <p>${p.description || ''}</p>
+        <span class="project-link" data-mn="Дэлгэрэнгүй харах" data-en="View Details">Дэлгэрэнгүй харах →</span>
       </div>
     `).join('');
   } else {
@@ -176,9 +181,7 @@ async function load() {
   const { data: skills } = await supabaseClient.from('skills').select('*').order('sort_order');
   const sg = document.getElementById('skillsGrid');
   if (skills && skills.length > 0) {
-    sg.innerHTML = skills.map(s => `
-      <div class="skill-chip">${s.skill_name}</div>
-    `).join('');
+    sg.innerHTML = skills.map(s => `<div class="skill-chip">${s.skill_name}</div>`).join('');
   } else {
     sg.innerHTML = '<p class="empty-msg">Одоогоор чадвар байхгүй байна</p>';
   }
