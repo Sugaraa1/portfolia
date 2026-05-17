@@ -86,7 +86,6 @@
   <a href="admin.html" data-mn="Админ" data-en="Admin">Админ</a>
 </footer>
 
-<!-- Project Modal -->
 <div id="projectModal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">✕</button>
@@ -95,7 +94,7 @@
       <h2 class="modal-title" id="modalTitle"></h2>
       <p class="modal-desc" id="modalDesc"></p>
       <a id="modalLink" class="modal-link" target="_blank" rel="noopener">
-        <span data-mn="Харах" data-en="View">Харах</span> ↗
+        <span data-mn="Харах" data-en="View">Харах</span>
       </a>
     </div>
   </div>
@@ -104,7 +103,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="script.js"></script>
 <script>
-// ---- LANG ----
+
 let currentLang = 'mn';
 function toggleLang() {
   currentLang = currentLang === 'mn' ? 'en' : 'mn';
@@ -114,16 +113,14 @@ function toggleLang() {
   });
 }
 
-// ---- PROJECTS ----
+
 let allProjects = [];
 
-// Тайлбарыг хураангуйлах — 100 тэмдэгтээс хэтэрвэл ... нэмнэ
 function truncate(str, len = 100) {
   if (!str) return '';
   return str.length > len ? str.slice(0, len).trimEnd() + '…' : str;
 }
 
-// ---- MODAL ----
 function openModal(index) {
   const p = allProjects[index];
   if (!p) return;
@@ -137,7 +134,7 @@ function openModal(index) {
   } else {
     linkEl.style.display = 'none';
   }
-  // scroll дээшлүүлэх
+
   const sa = document.querySelector('.modal-scroll-area');
   if (sa) sa.scrollTop = 0;
 
@@ -152,9 +149,8 @@ function closeModal() {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// ---- LOAD DATA ----
+
 async function load() {
-  // Projects
   const { data: projects } = await supabaseClient.from('projects').select('*');
   allProjects = projects || [];
   const pg = document.getElementById('projectsGrid');
@@ -172,7 +168,6 @@ async function load() {
     pg.innerHTML = '<p class="empty-msg">Одоогоор төсөл байхгүй байна</p>';
   }
 
-  // Skills
   const { data: skills } = await supabaseClient.from('skills').select('*').order('sort_order');
   const sg = document.getElementById('skillsGrid');
   if (skills && skills.length > 0) {
@@ -181,7 +176,6 @@ async function load() {
     sg.innerHTML = '<p class="empty-msg">Одоогоор чадвар байхгүй байна</p>';
   }
 
-  // Contact
   const { data: contact } = await supabaseClient.from('contact_info').select('*').eq('id', 1).single();
   if (contact) {
     document.getElementById('contactEmail').textContent = contact.email || '—';
